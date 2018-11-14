@@ -18,6 +18,7 @@ public class TicTacToe{
 
         char[][] mat = {{'_', '_', '_'},{'_', '_', '_'},{'_', '_', '_'}};
         Scanner s = new Scanner(System.in);
+
         boolean iwon = false;
         int x = -1;
         int y = -1;
@@ -26,9 +27,11 @@ public class TicTacToe{
             x = s.nextInt();
             y = s.nextInt();
 
-            //if ( (x,y) is taken )
-            //  print something
-            //  continue
+            if(x>2 || x<0 || y>2 || y<0){
+                System.out.println("Hey that's not a real spot try again >:(");
+                continue;
+            }
+
             if(mat[x][y]!='_'){
                 System.out.println("That spot is taken! Try again >:(");
                 continue;
@@ -37,8 +40,10 @@ public class TicTacToe{
             playerMove(mat, x, y);
             //print(mat);
 
-            if(hasWon(mat, x, y))
+            if(hasWon(mat, x, y)){
                 System.out.println("You've won wowow");
+                iwon=true;
+            }
 
             else if(isComplete(mat))
                 System.out.println("It's a tie!");
@@ -78,11 +83,13 @@ public class TicTacToe{
                         iwon = true;
                     }
                 }
-                if (potenVict(mat,'O')) //for blocking
-                    block(mat);
+                if (!iwon) {
+                    if (potenVict(mat,'O')) //for blocking
+                        block(mat);
 
-                else
-                    compMove(mat, x, y); //for placing
+                    else
+                        compMove(mat, x, y); //for placing
+                }
             }
 
             print(mat);
@@ -107,7 +114,7 @@ public class TicTacToe{
                 mat[1][1]='X';
             }
             else
-                putInNextCorner(mat);
+                putInNextEdge(mat);
         }
         // else if(((x==0 && y==0) || (x==0 && y==2) || (x==2 && y==0) || (x==2 && y==2))){//if O placed in corner
         //     if(mat[1][1]=='_'){
@@ -115,7 +122,7 @@ public class TicTacToe{
         //         // System.out.println("case 1a");
         //     }
         //     else{
-        //         putInNextCorner(mat);
+        //         putInNextEdge(mat);
         //         // System.out.println("case 1b");    
         //     }
         // }
@@ -126,19 +133,32 @@ public class TicTacToe{
     }
 
     static void putInNextCorner(char[][] mat){
+        // print(mat);
         if(mat[0][2]=='_'){
             mat[0][2]='X';
-        } else if(mat[2][0]=='_'){
-            mat[2][0]='X';
         } else if(mat[0][0]=='_'){
             mat[0][0]='X';
+        } else if(mat[2][0]=='_'){
+            mat[2][0]='X';
+        } else if(mat[2][2]=='_'){
+            mat[2][2]='X';
+        }
+    }
+
+    static void putInNextEdge(char[][] mat){
+        if(mat[1][2]=='_'){
+            mat[1][2]='X';
+        } else if(mat[0][1]=='_'){
+            mat[0][1]='X';
+        } else if(mat[1][0]=='_'){
+            mat[1][0]='X';
         } else if(mat[2][2]=='_'){
             mat[2][2]='X';
         }
     }
 
     static void block(char[][] mat){
-        //print(mat);
+        // print(mat);
         System.out.println("->I block you >:)");
         for(int i = 0; i<mat.length; i++){
             if(potenVictCol(mat, i, 'O') && findSpaceCol(mat, i)!=3){
