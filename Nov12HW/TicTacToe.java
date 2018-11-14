@@ -102,20 +102,27 @@ public class TicTacToe{
             putInNextCorner(mat);
             // System.out.println("case 0");
         }
-        else if(((x==0 && y==0) || (x==0 && y==2) || (x==2 && y==0) || (x==2 && y==2)) && mat[1][1]=='_') { //if O placed in corner
+        else{
             if(mat[1][1]=='_'){
                 mat[1][1]='X';
-                // System.out.println("case 1a");
             }
-            else{
+            else
                 putInNextCorner(mat);
-                // System.out.println("case 1b");    
-            }
         }
-        else if(((x==0 && y==1) || (x==1 && y==2) || (x==2 && y==1) || (x==1 && y==0))){ //if O placed on edge
-            putInNextCorner(mat);
-            // System.out.println("case 2");
-        }
+        // else if(((x==0 && y==0) || (x==0 && y==2) || (x==2 && y==0) || (x==2 && y==2))){//if O placed in corner
+        //     if(mat[1][1]=='_'){
+        //         mat[1][1]='X';
+        //         // System.out.println("case 1a");
+        //     }
+        //     else{
+        //         putInNextCorner(mat);
+        //         // System.out.println("case 1b");    
+        //     }
+        // }
+        // else if(((x==0 && y==1) || (x==1 && y==2) || (x==2 && y==1) || (x==1 && y==0))){ //if O placed on edge
+        //     putInNextCorner(mat);
+        //     // System.out.println("case 2");
+        // }
     }
 
     static void putInNextCorner(char[][] mat){
@@ -131,25 +138,26 @@ public class TicTacToe{
     }
 
     static void block(char[][] mat){
+        //print(mat);
         System.out.println("->I block you >:)");
         for(int i = 0; i<mat.length; i++){
             if(potenVictCol(mat, i, 'O') && findSpaceCol(mat, i)!=3){
                 // System.out.println("i is this " +i);
                 // System.out.println("text find space "+findSpaceCol(mat, i));
                 mat[findSpaceCol(mat, i)][i]='X';
-                System.out.println("cc1");
+                //System.out.println("cc1");
             }
             else if(potenVictRow(mat, i, 'O') && findSpaceRow(mat, i)!=3){
                 mat[i][findSpaceRow(mat, i)]='X';
-                System.out.println("cc2");
+                //System.out.println("cc2");
             }
             else if(potenVictDiag1(mat, 'O') && findSpaceDiag1(mat)!=3){
                 mat[findSpaceDiag1(mat)][findSpaceDiag1(mat)]='X';
-                System.out.println("cc3");
+                //System.out.println("cc3");
             }
             else if(potentVictDiag2(mat, 'O') && findSpaceDiag2(mat)!=3){
                 mat[findSpaceDiag2(mat)][2-findSpaceDiag2(mat)]='X';
-                System.out.println("cc4");
+                //System.out.println("cc4");
             }
         }
     }
