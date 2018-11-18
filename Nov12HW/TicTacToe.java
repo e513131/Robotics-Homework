@@ -27,7 +27,7 @@ public class TicTacToe{
             x = s.nextInt();
             y = s.nextInt();
 
-            if(x>2 || x<0 || y>2 || y<0){
+            if(!(x<=2 && x>=0) || !(y<=2 && y>=0)){ //x>2 || x<0 || y>2 || y<0){
                 System.out.println("Hey that's not a real spot try again >:(");
                 continue;
             }
@@ -55,7 +55,7 @@ public class TicTacToe{
                         mat[0][i]='X';
                         mat[1][i]='X';
                         mat[2][i]='X';
-                        System.out.println("Ha I won col "+i);
+                        System.out.println("Ha I won!");
                         iwon = true;
                     }
 
@@ -63,7 +63,7 @@ public class TicTacToe{
                         mat[i][0]='X';
                         mat[i][1]='X';
                         mat[i][2]='X';
-                        System.out.println("Ha I won row "+i);
+                        System.out.println("Ha I won!");
                         iwon = true;
                     }
 
@@ -71,7 +71,7 @@ public class TicTacToe{
                         mat[0][0]='X';
                         mat[1][1]='X';
                         mat[2][2]='X';
-                        System.out.println("Ha I won diag1");
+                        System.out.println("Ha I won!");
                         iwon = true;
                     }
 
@@ -79,14 +79,13 @@ public class TicTacToe{
                         mat[0][2]='X';
                         mat[1][1]='X';
                         mat[2][0]='X';
-                        System.out.println("Ha I won diag2!");
+                        System.out.println("Ha I won!");
                         iwon = true;
                     }
                 }
                 if (!iwon) {
                     if (potenVict(mat,'O')) //for blocking
                         block(mat);
-
                     else
                         compMove(mat, x, y); //for placing
                 }
@@ -104,7 +103,7 @@ public class TicTacToe{
     }
 
     static void compMove(char[][] mat, int x, int y){
-        System.out.println("->Now computer's move");
+        System.out.println("->I just went! Your turn :P");
         if(x==y && x==1){
             putInNextCorner(mat);
             // System.out.println("case 0");
@@ -113,23 +112,37 @@ public class TicTacToe{
             if(mat[1][1]=='_'){
                 mat[1][1]='X';
             }
-            else
-                putInNextEdge(mat);
+            else if(((x==0 && y==0) || (x==0 && y==2) || (x==2 && y==0) || (x==2 && y==2))){//if O placed in corner
+                    if(mat[1][1]=='_'){
+                        mat[1][1]='X';
+                        // System.out.println("case 1a");
+                    }
+                    else{
+                        putInNextEdge(mat);
+                        // System.out.println("case 1b");    
+                    }
+                }
+                else if(((x==0 && y==1) || (x==1 && y==2) || (x==2 && y==1) || (x==1 && y==0))){ //if O placed on edge
+                    putCorner(mat, x, y);
+                    // System.out.println("case 2");
+                }
         }
-        // else if(((x==0 && y==0) || (x==0 && y==2) || (x==2 && y==0) || (x==2 && y==2))){//if O placed in corner
-        //     if(mat[1][1]=='_'){
-        //         mat[1][1]='X';
-        //         // System.out.println("case 1a");
-        //     }
-        //     else{
-        //         putInNextEdge(mat);
-        //         // System.out.println("case 1b");    
-        //     }
-        // }
-        // else if(((x==0 && y==1) || (x==1 && y==2) || (x==2 && y==1) || (x==1 && y==0))){ //if O placed on edge
-        //     putInNextCorner(mat);
-        //     // System.out.println("case 2");
-        // }
+  
+    }
+
+    static void putCorner(char[][] mat, int x, int y){ //anti-Darren
+        if(y==1){ //vertical pair
+            if(x==2)
+                mat[0][2]='X';
+            if(x==0)
+                mat[0][0]='X';
+        }
+        else if(x==1){ //horizontal pair
+            if(y==2)
+                mat[2][2]='X';
+            if(y==0)
+                mat[2][0]='X';
+        }
     }
 
     static void putInNextCorner(char[][] mat){
@@ -159,25 +172,30 @@ public class TicTacToe{
 
     static void block(char[][] mat){
         // print(mat);
+        boolean flag = false;
         System.out.println("->I block you >:)");
-        for(int i = 0; i<mat.length; i++){
+        for(int i = 0; i<mat.length && flag==false; i++){
             if(potenVictCol(mat, i, 'O') && findSpaceCol(mat, i)!=3){
                 // System.out.println("i is this " +i);
                 // System.out.println("text find space "+findSpaceCol(mat, i));
                 mat[findSpaceCol(mat, i)][i]='X';
                 //System.out.println("cc1");
+                flag = true;
             }
             else if(potenVictRow(mat, i, 'O') && findSpaceRow(mat, i)!=3){
                 mat[i][findSpaceRow(mat, i)]='X';
                 //System.out.println("cc2");
+                flag = true;
             }
             else if(potenVictDiag1(mat, 'O') && findSpaceDiag1(mat)!=3){
                 mat[findSpaceDiag1(mat)][findSpaceDiag1(mat)]='X';
                 //System.out.println("cc3");
+                flag = true;
             }
             else if(potentVictDiag2(mat, 'O') && findSpaceDiag2(mat)!=3){
                 mat[findSpaceDiag2(mat)][2-findSpaceDiag2(mat)]='X';
                 //System.out.println("cc4");
+                flag = true;
             }
         }
     }
