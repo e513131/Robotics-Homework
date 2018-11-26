@@ -115,34 +115,60 @@ public class TicTacToe{
             else if(((x==0 && y==0) || (x==0 && y==2) || (x==2 && y==0) || (x==2 && y==2))){//if O placed in corner
                     if(mat[1][1]=='_'){
                         mat[1][1]='X';
-                        // System.out.println("case 1a");
+                        System.out.println("case 1a");
                     }
                     else{
-                        putInNextEdge(mat);
-                        // System.out.println("case 1b");    
+                        //putInNextEdge(mat);
+                        if(checkL(mat)!=0){
+                            placeL(mat);
+                        }
+                        else{
+                            putInNextEdge(mat);
+                        }
+                        System.out.println("case 1b");    
                     }
+            }
+            else if(((x==0 && y==1) || (x==1 && y==2) || (x==2 && y==1) || (x==1 && y==0))){ //if O placed on edge
+                if(checkL(mat)!=0){
+                    placeL(mat);
                 }
-                else if(((x==0 && y==1) || (x==1 && y==2) || (x==2 && y==1) || (x==1 && y==0))){ //if O placed on edge
-                    putCorner(mat, x, y);
-                    // System.out.println("case 2");
+                else{
+                    putInNextCorner(mat);
                 }
+                System.out.println("case 2");
+            }
         }
-  
     }
 
-    static void putCorner(char[][] mat, int x, int y){ //anti-Darren
-        if(y==1){ //vertical pair
-            if(x==2)
-                mat[0][2]='X';
-            if(x==0)
-                mat[0][0]='X';
+    static void placeL(char[][] mat){
+        if(checkL(mat)==1) {
+            mat[0][0]='X';
         }
-        else if(x==1){ //horizontal pair
-            if(y==2)
-                mat[2][2]='X';
-            if(y==0)
-                mat[2][0]='X';
+        else if(checkL(mat)==2) {
+            mat[0][2]='X';
         }
+        else if(checkL(mat)==3) {
+            mat[2][0]='X';
+        }
+        else if(checkL(mat)==4) {
+            mat[2][2]='X';
+        }
+    }
+
+    static int checkL (char[][] mat){
+        if(((mat[1][0]=='O' && (mat[0][1]==mat[1][0] || mat[1][0]==mat[0][2])) || (mat[0][1]=='O' && mat[2][0]==mat[0][1])) && mat[0][0]=='_'){
+            return 1;
+        }
+        if(((mat[0][1]=='O' && (mat[0][1]==mat[1][2] || mat[0][1]==mat[2][2])) || (mat[0][0]=='O' && mat[0][0]==mat[1][2])) && mat[0][2]=='_'){
+            return 2;
+        }
+        if(((mat[2][1]=='O' && (mat[0][0]==mat[2][1] || mat[1][0]==mat[2][1])) || (mat[2][2]=='O' && mat[2][2]==mat[1][0])) && mat[2][0]=='_'){
+            return 3;
+        }
+        if(((mat[1][2]=='O' && (mat[1][2]==mat[2][1] || mat[1][2]==mat[2][0])) || (mat[2][1]=='O' && mat[2][1]==mat[0][2])) && mat[2][2]=='_'){
+            return 4;
+        }
+        return 0;
     }
 
     static void putInNextCorner(char[][] mat){

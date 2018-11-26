@@ -39,8 +39,9 @@ public class EmmaFu implements Player{
                 if (!iwon) {
                     if (potenVict(mat,'O')) //for blocking
                         return block(mat);
-                    else
+                    else {
                         return compMove(mat, x, y); //for placing
+                    }
                 }
             return "";
     }
@@ -96,8 +97,11 @@ public class EmmaFu implements Player{
                 if(checkL(mat)!=0){
                     return placeL(mat);
                 }
-                else{
+                else if(mat[0][0]=='_' || mat[0][2]=='_' || mat[2][2]=='_' || mat[2][0]=='_'){
                     return putCorner(mat, x, y);
+                }
+                else{
+                    return putInNextEdge(mat);
                 }
                     // System.out.println("case 2");
             }
@@ -188,8 +192,8 @@ public class EmmaFu implements Player{
             return "01";
         } else if(mat[1][0]=='_'){
             return "10";
-        } else if(mat[2][2]=='_'){
-            return "22";
+        } else if(mat[2][1]=='_'){
+            return "21";
         }
         return "";
     }

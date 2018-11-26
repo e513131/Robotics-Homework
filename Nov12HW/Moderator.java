@@ -1,50 +1,84 @@
 public class Moderator {
     public static void main(String[] args){
-        //char[][] mat = new char[3][3];
         char[][] mat = {{'_', '_', '_'},{'_', '_', '_'},{'_', '_', '_'}};
-        EmmaFu player1 = new EmmaFu();
-        EmmaFu player2 = new EmmaFu();
+        Player player1 = new EmmaFu();
+        Player player2 = new EmmaFu();
         int x, y;
         boolean player2Moved = false;
+        String m;
 
         player1.reset();
         player2.reset();
         
-        String m = player1.move(null);
-        x = Character.getNumericValue(m.charAt(0));
-        y = Character.getNumericValue(m.charAt(1));
-        mat[x][y]='X';        
+        // String m = player1.move(null);
+        // x = Character.getNumericValue(m.charAt(0));
+        // y = Character.getNumericValue(m.charAt(1));
+        // mat[x][y]='X';        
 
-        print(mat);
+        // print(mat);
 /////////////////////////////////////////
-// m = player2.move(m);
-// System.out.println("m->" + m);
-// x = Character.getNumericValue(m.charAt(0));
-// y = Character.getNumericValue(m.charAt(1));
-// mat[x][y] = 'O';            
-// print(mat);
+m = player2.move(null);
+x = Character.getNumericValue(m.charAt(0));
+y = Character.getNumericValue(m.charAt(1));
+mat[x][y] = 'O';
+print(mat);
+
+//m = player1.move(m);
+m = "02";
+x = Character.getNumericValue(m.charAt(0));
+y = Character.getNumericValue(m.charAt(1));
+mat[x][y] = 'X';
+print(mat);
+
+m = player2.move(m);
+x = Character.getNumericValue(m.charAt(0));
+y = Character.getNumericValue(m.charAt(1));
+mat[x][y] = 'O';            
+print(mat);
+
+//m = player1.move(m);
+m = "10";
+x = Character.getNumericValue(m.charAt(0));
+y = Character.getNumericValue(m.charAt(1));
+mat[x][y] = 'X';
+print(mat);
+
+m = player2.move(m);
+System.out.println("m->" + m);
+x = Character.getNumericValue(m.charAt(0));
+y = Character.getNumericValue(m.charAt(1));
+mat[x][y] = 'O';            
+print(mat);
 
 // m = player1.move(m);
-// x = Character.getNumericValue(m.charAt(0));
-// y = Character.getNumericValue(m.charAt(1));
-// mat[x][y] = 'X';
-// print(mat);
+m = "22";
+x = Character.getNumericValue(m.charAt(0));
+y = Character.getNumericValue(m.charAt(1));
+mat[x][y] = 'X';
+print(mat);
 
-// m = player2.move(m);
-// System.out.println("m->" + m);
-// x = Character.getNumericValue(m.charAt(0));
-// y = Character.getNumericValue(m.charAt(1));
-// mat[x][y] = 'O';            
-// print(mat);
+m = player2.move(m);
+System.out.println("m->" + m);
+x = Character.getNumericValue(m.charAt(0));
+y = Character.getNumericValue(m.charAt(1));
+mat[x][y] = 'O';            
+print(mat);
 
-// m = player1.move(m);
-// x = Character.getNumericValue(m.charAt(0));
-// y = Character.getNumericValue(m.charAt(1));
-// mat[x][y] = 'X';
-// print(mat);
+m = "01";
+x = Character.getNumericValue(m.charAt(0));
+y = Character.getNumericValue(m.charAt(1));
+mat[x][y] = 'X';
+print(mat);
+
+m = player2.move(m);
+System.out.println("m->" + m);
+x = Character.getNumericValue(m.charAt(0));
+y = Character.getNumericValue(m.charAt(1));
+mat[x][y] = 'O';            
+print(mat);
 /////////////////////////////////////////
 
-        
+        /*
         while(moreThanOneSpace(mat) && !hasWon(mat, m)) {
             if (player2Moved) 
                 m = player1.move(m);
@@ -58,16 +92,6 @@ public class Moderator {
                 mat[x][y] = 'O';            
             print(mat);
             player2Moved = !player2Moved;
-
-            
-            //if(!moreThanOneSpace(mat)) {
-            //    m = player1.move(m);
-            //    x = Character.getNumericValue(m.charAt(0));
-            //    y = Character.getNumericValue(m.charAt(1));
-            //    mat[x][y] = 'X';
-            //    print(mat);
-            //    player2Moved = false;
-            //}
         }
 
         if (player2Moved && hasWon(mat, m)) {
@@ -79,7 +103,7 @@ public class Moderator {
         } else {
             System.out.println("It's a tie :P");
         }
-        
+        */
     }
 
     static boolean hasWon(char[][] mat, String m){
@@ -123,7 +147,8 @@ public class Moderator {
             for(int j = 0; j<mat[0].length; j++){
                 System.out.print(mat[i][j] + "|");
             }
-            System.out.println();
+            System.out.println("");
         }
+        System.out.println("");
     } 
 }
