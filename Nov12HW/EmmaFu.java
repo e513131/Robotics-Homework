@@ -5,87 +5,51 @@ public class EmmaFu implements Player{
     }
 
     public String move(String lastMove){
-        if(lastMove=null){
+        if(lastMove==null){
             mat[1][1]='X';
             return "11";
         }
 
-        //System.out.println("You go first! You are O!");
-
-        //char[][] mat = {{'_', '_', '_'},{'_', '_', '_'},{'_', '_', '_'}};
-        //Scanner s = new Scanner(System.in);
-
         boolean iwon = false;
         int x = 1;
         int y = -1; // move.charAt[1];
-        
-        while(!isComplete(mat) && !iwon){            
+                 
             x = Character.getNumericValue(lastMove.charAt(0));
             y = Character.getNumericValue(lastMove.charAt(1));
 
             playerMove(mat, x, y);
-            //print(mat);
 
-            if(hasWon(mat, x, y)){
-                System.out.println("You've won wowow");
-                iwon=true;
-            }
-
-            else if(isComplete(mat))
-                System.out.println("It's a tie!");
-
-            else {
-                // computers move.
                 for(int i = 0; i<mat.length; i++){      //for winning
                     if(potenVictCol(mat, i, 'X')){
-                        mat[0][i]='X';
-                        mat[1][i]='X';
-                        mat[2][i]='X';
-                        System.out.println("Ha I won!");
-                        iwon = true;
+                        return Integer.toString(findSpaceCol(mat, i)) + Integer.toString(i);                      
                     }
 
                     else if(potenVictRow(mat, i, 'X')){
-                        mat[i][0]='X';
-                        mat[i][1]='X';
-                        mat[i][2]='X';
-                        System.out.println("Ha I won!");
-                        iwon = true;
+                        return Integer.toString(i) + Integer.toString(findSpaceRow(mat, i));
                     }
 
                     else if(potenVictDiag1(mat, 'X')){
-                        mat[0][0]='X';
-                        mat[1][1]='X';
-                        mat[2][2]='X';
-                        System.out.println("Ha I won!");
-                        iwon = true;
+                        return Integer.toString(findSpaceDiag1(mat)) + Integer.toString(findSpaceDiag1(mat));
                     }
 
                     else if(potentVictDiag2(mat, 'X')){
-                        mat[0][2]='X';
-                        mat[1][1]='X';
-                        mat[2][0]='X';
-                        System.out.println("Ha I won!");
-                        iwon = true;
+                        return Integer.toString(findSpaceDiag2(mat)) + Integer.toString((2-findSpaceDiag2(mat)));
                     }
                 }
                 if (!iwon) {
                     if (potenVict(mat,'O')) //for blocking
-                        block(mat);
+                        return block(mat);
                     else
-                        compMove(mat, x, y); //for placing
+                        return compMove(mat, x, y); //for placing
                 }
-            }
-
-            print(mat);
-        } 
+            return "";
     }
     
 
     public void reset(){
         for(int i=0; i<3; i++){
             for(int j=0; j<3; j++){
-                mat[i][j]="_";
+                mat[i][j]='_';
             }
         }
     }
@@ -101,9 +65,9 @@ public class EmmaFu implements Player{
     }
 
     static String compMove(char[][] mat, int x, int y){
-        System.out.println("->I just went! Your turn :P");
+        // System.out.println("->I just went! Your turn :P");
         if(x==y && x==1){
-            putInNextCorner(mat);
+            return putInNextCorner(mat);
             // System.out.println("case 0");
         }
         else{
@@ -118,17 +82,63 @@ public class EmmaFu implements Player{
                         return "11";
                     }
                     else{
-                        return putInNextEdge(mat);
+                        if(checkL(mat)!=0){
+                            return placeL(mat);
+                        }
+                        else{
+                            return putInNextEdge(mat);
+                        }
                         // System.out.println("case 1b");
 
                     }
             }
             else if(((x==0 && y==1) || (x==1 && y==2) || (x==2 && y==1) || (x==1 && y==0))){ //if O placed on edge
+                if(checkL(mat)!=0){
+                    return placeL(mat);
+                }
+                else{
                     return putCorner(mat, x, y);
+                }
                     // System.out.println("case 2");
             }
         }
         return "";
+    }
+
+    static String placeL(char[][] mat){
+        if(checkL(mat)==1) {
+            mat[0][0]='X';
+            return "00";
+        }
+        else if(checkL(mat)==2) {
+            mat[0][2]='X';
+            return "02";
+        }
+        else if(checkL(mat)==3) {
+            mat[2][0]='X';
+            return "20";
+        }
+        else if(checkL(mat)==4) {
+            mat[2][2]='X';
+            return "22";
+        }
+        return "";
+    }
+
+    static int checkL (char[][] mat){
+        if(((mat[1][0]=='O' && (mat[0][1]==mat[1][0] || mat[1][0]==mat[0][2])) || (mat[0][1]=='O' && mat[2][0]==mat[0][1])) && mat[0][0]=='_'){
+            return 1;
+        }
+        if(((mat[0][1]=='O' && (mat[0][1]==mat[1][2] || mat[0][1]==mat[2][2])) || (mat[0][0]=='O' && mat[0][0]==mat[1][2])) && mat[0][2]=='_'){
+            return 2;
+        }
+        if(((mat[2][1]=='O' && (mat[0][0]==mat[2][1] || mat[1][0]==mat[2][1])) || (mat[2][2]=='O' && mat[2][2]==mat[1][0])) && mat[2][0]=='_'){
+            return 3;
+        }
+        if(((mat[1][2]=='O' && (mat[1][2]==mat[2][1] || mat[1][2]==mat[2][0])) || (mat[2][1]=='O' && mat[2][1]==mat[0][2])) && mat[2][2]=='_'){
+            return 4;
+        }
+        return 0;
     }
 
     static String putCorner(char[][] mat, int x, int y) { //anti-Darren
@@ -187,41 +197,47 @@ public class EmmaFu implements Player{
    static String block(char[][] mat){
         // print(mat);
         boolean flag = false;
-        System.out.println("->I block you >:)");
+        // System.out.println("->I block you >:)");
         for(int i = 0; i<mat.length && flag==false;i++) {
             if(potenVictCol(mat, i, 'O') && findSpaceCol(mat, i)!=3){
+                int spaceID = findSpaceCol(mat, i);
                 // System.out.println("i is this " +i);
                 // System.out.println("text find space "+findSpaceCol(mat, i));
-                mat[findSpaceCol(mat, i)][i]='X';
+                mat[spaceID][i]='X';
                 flag = true;
 
-                String a = Integer.toString(findSpaceCol(mat, i));
+                String a = Integer.toString(spaceID);
                 String b = Integer.toString(i);
-                return a+b;
-                //System.out.println("cc1");               
+                // System.out.println("cc1"); 
+                return a+b;              
             }
-            else if(potenVictRow(mat, i, 'O') && findSpaceRow(mat, i)!=3){
-                mat[i][findSpaceRow(mat, i)]='X';
-                //System.out.println("cc2");
+            else if(potenVictRow(mat, i, 'O') && findSpaceRow(mat, i)!=4){
+                int spaceID = findSpaceRow(mat, i);
+                mat[i][spaceID]='X';
+                // System.out.println("cc2, and " + "i is " + i);
                 flag = true;
 
                 String a = Integer.toString(i);
-                String b = Integer.toString(findSpaceRow(mat, i));
+                String b = Integer.toString(spaceID);
                 return a+b;
             }
+
             else if(potenVictDiag1(mat, 'O') && findSpaceDiag1(mat)!=3){
-                mat[findSpaceDiag1(mat)][findSpaceDiag1(mat)]='X';
-                //System.out.println("cc3");
+                int spaceID = findSpaceDiag1(mat);
+                mat[spaceID][spaceID]='X';
+                // System.out.println("cc3");
                 flag = true;
-                String a = Integer.toString(findSpaceDiag1(mat));
+                String a = Integer.toString(spaceID);
                 return a+a;
             }
+
             else if(potentVictDiag2(mat, 'O') && findSpaceDiag2(mat)!=3){
-                mat[findSpaceDiag2(mat)][2-findSpaceDiag2(mat)]='X';
-                //System.out.println("cc4");
+                int spaceID = findSpaceDiag2(mat);
+                mat[spaceID][2-spaceID]='X';
+                // System.out.println("cc4");
                 flag = true;
-                String a = Integer.toString(findSpaceDiag1(mat));
-                String b = Integer.toString(2-findSpaceDiag2(mat));
+                String a = Integer.toString(spaceID);
+                String b = Integer.toString(2-spaceID);
                 return a+b;
             }
         }
@@ -240,7 +256,10 @@ public class EmmaFu implements Player{
             if(mat[id][i]=='_')
                 return i;
         }
-        return 3;
+        // System.out.println("************");
+        // print(mat);
+        // System.out.println("************");
+        return 4;
     }
 
     static int findSpaceDiag1(char[][] mat){
@@ -337,5 +356,14 @@ public class EmmaFu implements Player{
         if(countX==2 && countSpace==1)
             return true;
         return false; 
+    }
+    static void print(char[][] mat){
+        for(int i = 0; i<mat.length; i++){
+            System.out.print("|");
+            for(int j = 0; j<mat[0].length; j++){
+                System.out.print(mat[i][j] + "|");
+            }
+            System.out.println();
+        }
     }
 }
