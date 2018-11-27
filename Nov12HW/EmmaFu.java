@@ -68,7 +68,7 @@ public class EmmaFu implements Player{
     static String compMove(char[][] mat, int x, int y){
         // System.out.println("->I just went! Your turn :P");
         if(x==y && x==1){
-            return putInNextCorner(mat);
+            return putInNextEdge(mat);
             // System.out.println("case 0");
         }
         else{
